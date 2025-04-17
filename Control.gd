@@ -1,10 +1,8 @@
 extends Control
 
-# Game constants
 const BOARD_SIZE := 3
 const SERVER_URL := "http://127.0.0.1:8000/run-cirq"
 
-# UI elements
 @onready var info_label: Label = $MainVBox/InfoLabel
 @onready var start_button: Button = $MainVBox/ControlPanel/ButtonPanel/StartButton
 @onready var reset_button: Button = $MainVBox/ControlPanel/ButtonPanel/ResetButton
@@ -13,7 +11,6 @@ const SERVER_URL := "http://127.0.0.1:8000/run-cirq"
 @onready var grid_container: GridContainer = $MainVBox/GameGrid
 @onready var http_request: HTTPRequest = $MainVBox/QuantumRequest
 
-# Game state
 var cells: Array[Button] = []
 var moves: Array[String] = []
 var game_started: bool = false
@@ -25,24 +22,19 @@ func _ready() -> void:
 		child.queue_free()
 	cells.clear()
 	
-	# Настройка якорных точек для корневого элемента
 	self.anchor_right = 1.0
 	self.anchor_bottom = 1.0
 	
-	# Настройка MainVBox
 	$MainVBox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	$MainVBox.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	$MainVBox.alignment = BoxContainer.ALIGNMENT_CENTER
 	
-	# Настройка ControlPanel
 	$MainVBox/ControlPanel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	$MainVBox/ControlPanel.alignment = BoxContainer.ALIGNMENT_CENTER
 	
-	# Настройка GameGrid
 	$MainVBox/GameGrid.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	$MainVBox/GameGrid.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	
-	# Создаем кнопки игрового поля
 	for i in range(BOARD_SIZE * BOARD_SIZE):
 		var button := Button.new()
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -52,13 +44,10 @@ func _ready() -> void:
 		$MainVBox/GameGrid.add_child(button)
 		cells.append(button)
 	
-	# Ждем один кадр перед финальной настройкой
 	await get_tree().process_frame
 	
-	# Принудительно устанавливаем позицию ControlPanel
 	$MainVBox/ControlPanel.position.y = 0
 	
-	# Инициализация UI соединений
 	start_button.pressed.connect(_on_start_button_pressed)
 	reset_button.pressed.connect(_on_reset_button_pressed)
 	x_slider.value_changed.connect(_on_x_slider_changed)
@@ -102,24 +91,20 @@ func _on_cell_pressed(button: Button) -> void:
 	
 	var current_pressed_button = button
 	
-	# Determine which quantum parameter to use based on current player
 	var power :float = 1.0 + quantum_params["qX"] if current_player == "X" else quantum_params["qO"]
 	
-	# Prepare the quantum computation request
 	var request_data := {
 		"qubit_name": current_player,
 		"power": power,
-		"cell_index": cells.find(button)  # Добавляем индекс кнопки
+		"cell_index": cells.find(button) 
 	}
 	
 	var json := JSON.new()
 	var json_string := json.stringify(request_data)
 	
-	# Disable all buttons while waiting for quantum result
 	for cell in cells:
 		cell.disabled = true
 	
-	# Send request to quantum server
 	var headers := ["Content-Type: application/json"]
 	http_request.request(SERVER_URL, headers, HTTPClient.METHOD_POST, json_string)
 
@@ -167,7 +152,6 @@ func _on_http_request_completed(result: int, response_code: int, headers: Packed
 		update_info_label("Invalid cell index")
 		
 func check_win() -> bool:
-	# Check rows
 	for row in range(BOARD_SIZE):
 		var first := cells[row * BOARD_SIZE].text
 		if first == "":
@@ -183,7 +167,6 @@ func check_win() -> bool:
 			highlight_winning_cells(range(row * BOARD_SIZE, (row + 1) * BOARD_SIZE))
 			return true
 	
-	# Check columns
 	for col in range(BOARD_SIZE):
 		var first := cells[col].text
 		if first == "":
@@ -199,7 +182,6 @@ func check_win() -> bool:
 			highlight_winning_cells(range(col, BOARD_SIZE * BOARD_SIZE, BOARD_SIZE))
 			return true
 	
-	# Check diagonals
 	var first_diag := cells[0].text
 	if first_diag != "":
 		var win := true
