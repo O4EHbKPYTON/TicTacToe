@@ -14,8 +14,8 @@ const SERVER_URL := "http://127.0.0.1:8000/run-cirq"
 var cells: Array[Button] = []
 var moves: Array[String] = []
 var game_started: bool = false
-var current_player: String = "X"
-var quantum_params: Dictionary = {"qX": 0.0, "qO": 0.0}
+var current_player: String = "×"
+var quantum_params: Dictionary = {"q×": 0.0, "qo": 0.0}
 
 func _ready() -> void:
 	for child in $MainVBox/GameGrid.get_children():
@@ -54,20 +54,20 @@ func _ready() -> void:
 	o_slider.value_changed.connect(_on_o_slider_changed)
 	http_request.request_completed.connect(_on_http_request_completed)
 	
-	update_info_label("Choose quantum uncertainty in X and O")
+	update_info_label("Выберите квантовую неопределенность для × и o")
 
 func _on_start_button_pressed() -> void:
 	if not game_started:
 		game_started = true
-		current_player = "X"
-		update_info_label("X's move")
+		current_player = "×"
+		update_info_label("Ход ×")
 
 func _on_reset_button_pressed() -> void:
 	game_started = false
 	moves.clear()
-	current_player = "X"
-	quantum_params["qX"] = 0.0
-	quantum_params["qO"] = 0.0
+	current_player = "×"
+	quantum_params["q×"] = 0.0
+	quantum_params["qo"] = 0.0
 	x_slider.value = 0.0
 	o_slider.value = 0.0
 	
@@ -75,15 +75,15 @@ func _on_reset_button_pressed() -> void:
 		button.text = ""
 		button.disabled = false
 	
-	update_info_label("Choose quantum uncertainty in X and O")
+	update_info_label("Выберите квантовую неопределенность для × и o")
 
 func _on_x_slider_changed(value: float) -> void:
-	quantum_params["qX"] = value
-	update_info_label("Quantum uncertainty in X = %.1f" % value)
+	quantum_params["q×"] = value
+	update_info_label("Квантовая неопределенность в × = %.1f" % value)
 
 func _on_o_slider_changed(value: float) -> void:
-	quantum_params["qO"] = value
-	update_info_label("Quantum uncertainty in O = %.1f" % value)
+	quantum_params["qo"] = value
+	update_info_label("Квантовая неопределенность в o = %.1f" % value)
 
 func _on_cell_pressed(button: Button) -> void:
 	if not game_started or button.text != "":
@@ -91,7 +91,7 @@ func _on_cell_pressed(button: Button) -> void:
 	
 	var current_pressed_button = button
 	
-	var power :float = 1.0 + quantum_params["qX"] if current_player == "X" else quantum_params["qO"]
+	var power :float = 1.0 + quantum_params["q×"] if current_player == "×" else quantum_params["qo"]
 	
 	var request_data := {
 		"qubit_name": current_player,
@@ -109,19 +109,19 @@ func _on_cell_pressed(button: Button) -> void:
 	http_request.request(SERVER_URL, headers, HTTPClient.METHOD_POST, json_string)
 
 func _on_http_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-	# Re-enable all buttons
+	# Повторное включение кнопки
 	for cell in cells:
 		cell.disabled = false
 	
 	if result != HTTPRequest.RESULT_SUCCESS:
-		update_info_label("Error connecting to quantum server")
+		update_info_label("Ошибка подключения к run_quantum.py")
 		return
 	
 	var json := JSON.new()
 	var parse_result := json.parse(body.get_string_from_utf8())
 	
 	if parse_result != OK:
-		update_info_label("Error parsing quantum result")
+		update_info_label("Ошибка при анализе квантового результата")
 		return
 	
 	var response_data: Dictionary = json.get_data()
@@ -131,7 +131,7 @@ func _on_http_request_completed(result: int, response_code: int, headers: Packed
 	if symbol.is_empty() or cell_index == -1:
 		print(cell_index)
 		print(symbol.is_empty())
-		update_info_label("Invalid quantum result")
+		update_info_label("Неверный квантовый результат")
 		return
 	
 	# Находим кнопку по индексу
@@ -140,16 +140,16 @@ func _on_http_request_completed(result: int, response_code: int, headers: Packed
 		moves.append(symbol)
 		
 		if check_win():
-			update_info_label("%s won the game!" % symbol)
+			update_info_label("%s выиграл игру!" % symbol)
 			game_started = false
 		elif moves.size() == BOARD_SIZE * BOARD_SIZE:
-			update_info_label("Draw!")
+			update_info_label("Ничья!")
 			game_started = false
 		else:
-			current_player = "O" if current_player == "X" else "X"
+			current_player = "o" if current_player == "×" else "×"
 			update_info_label("%s's move" % current_player)
 	else:
-		update_info_label("Invalid cell index")
+		update_info_label("Неверный индекс ячейки")
 		
 func check_win() -> bool:
 	for row in range(BOARD_SIZE):
