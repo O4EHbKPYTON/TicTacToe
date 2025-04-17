@@ -100,13 +100,16 @@ func _on_cell_pressed(button: Button) -> void:
 	if not game_started or button.text != "":
 		return
 	
+	var current_pressed_button = button
+	
 	# Determine which quantum parameter to use based on current player
 	var power :float = 1.0 + quantum_params["qX"] if current_player == "X" else quantum_params["qO"]
 	
 	# Prepare the quantum computation request
 	var request_data := {
 		"qubit_name": current_player,
-		"power": power
+		"power": power,
+		"cell_index": cells.find(button)  # Добавляем индекс кнопки
 	}
 	
 	var json := JSON.new()
@@ -138,36 +141,31 @@ func _on_http_request_completed(result: int, response_code: int, headers: Packed
 	
 	var response_data: Dictionary = json.get_data()
 	var symbol: String = response_data.get("result", "")
+	var cell_index: int = response_data.get("cell_index", -1)  # Получаем индекс
 	
-	if symbol.is_empty():
+	if symbol.is_empty() or cell_index == -1:
+		print(cell_index)
+		print(symbol.is_empty())
 		update_info_label("Invalid quantum result")
 		return
 	
-	# Find which button was pressed (since we can't pass it directly through HTTP)
-	var pressed_button: Button
-	for button in cells:
-		if button.text == "" and button.is_pressed():
-			pressed_button = button
-			break
-	
-	if not pressed_button:
-		update_info_label("Couldn't determine pressed cell")
-		return
-	
-	# Update the game state
-	pressed_button.text = symbol
-	moves.append(symbol)
-	
-	if check_win():
-		update_info_label("%s won the game!" % symbol)
-		game_started = false
-	elif moves.size() == BOARD_SIZE * BOARD_SIZE:
-		update_info_label("Draw!")
-		game_started = false
+	# Находим кнопку по индексу
+	if cell_index >= 0 and cell_index < cells.size():
+		cells[cell_index].text = symbol
+		moves.append(symbol)
+		
+		if check_win():
+			update_info_label("%s won the game!" % symbol)
+			game_started = false
+		elif moves.size() == BOARD_SIZE * BOARD_SIZE:
+			update_info_label("Draw!")
+			game_started = false
+		else:
+			current_player = "O" if current_player == "X" else "X"
+			update_info_label("%s's move" % current_player)
 	else:
-		current_player = "O" if current_player == "X" else "X"
-		update_info_label("%s's move" % current_player)
-
+		update_info_label("Invalid cell index")
+		
 func check_win() -> bool:
 	# Check rows
 	for row in range(BOARD_SIZE):
