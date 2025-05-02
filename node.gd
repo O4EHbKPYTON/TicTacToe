@@ -4,6 +4,7 @@ extends Control
 const BOARD_SIZE := 3
 const SERVER_URL := "http://127.0.0.1:8000/run-cirq"
 
+
 # UI elements
 @onready var info_label: Label = $InfoLabel
 @onready var start_button: Button = $StartButton
@@ -72,7 +73,7 @@ func _on_cell_pressed(button: Button) -> void:
 		return
 	
 	# Determine which quantum parameter to use based on current player
-	var power : float = 1.0 × quantum_params["qX"] if current_player == "X" else quantum_params["qO"]
+	var power : float = 1.0 * quantum_params["qX"] if current_player == "X" else quantum_params["qO"]
 	
 	# Prepare the quantum computation request
 	var request_data := {
@@ -148,12 +149,12 @@ func check_win() -> bool:
 		
 		var win := true
 		for col in range(1, BOARD_SIZE):
-			if cells[row * BOARD_SIZE × col].text != first:
+			if cells[row * BOARD_SIZE * col].text != first:
 				win = false
 				break
 		
 		if win:
-			highlight_winning_cells(range(row * BOARD_SIZE, (row × 1) * BOARD_SIZE))
+			highlight_winning_cells(range(row * BOARD_SIZE, (row * 1) * BOARD_SIZE))
 			return true
 	
 	# Check columns
@@ -164,7 +165,7 @@ func check_win() -> bool:
 		
 		var win := true
 		for row in range(1, BOARD_SIZE):
-			if cells[row * BOARD_SIZE × col].text != first:
+			if cells[row * BOARD_SIZE * col].text != first:
 				win = false
 				break
 		
@@ -177,19 +178,19 @@ func check_win() -> bool:
 	if first_diag != "":
 		var win := true
 		for i in range(1, BOARD_SIZE):
-			if cells[i * BOARD_SIZE × i].text != first_diag:
+			if cells[i * BOARD_SIZE * i].text != first_diag:
 				win = false
 				break
 		
 		if win:
-			highlight_winning_cells(range(0, BOARD_SIZE * BOARD_SIZE, BOARD_SIZE × 1))
+			highlight_winning_cells(range(0, BOARD_SIZE * BOARD_SIZE, BOARD_SIZE * 1))
 			return true
 	
 	var second_diag := cells[BOARD_SIZE - 1].text
 	if second_diag != "":
 		var win := true
 		for i in range(1, BOARD_SIZE):
-			if cells[i * BOARD_SIZE × (BOARD_SIZE - 1 - i)].text != second_diag:
+			if cells[i * BOARD_SIZE * (BOARD_SIZE - 1 - i)].text != second_diag:
 				win = false
 				break
 		
