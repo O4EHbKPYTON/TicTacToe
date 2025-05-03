@@ -1,0 +1,169 @@
+[gd_scene load_steps=2 format=3 uid="uid://dauvnhna4c3q8"]
+
+[ext_resource type="Script" uid="uid://eajprkg16yhu" path="res://Control.gd" id="1_sy5k4"]
+
+[node name="QuantumTicTacToe" type="Control"]
+layout_mode = 3
+anchor_left = -0.131
+anchor_top = -0.173
+anchor_right = -0.131
+anchor_bottom = -0.173
+offset_left = 104.912
+offset_top = 505.104
+offset_right = 1059.91
+offset_bottom = 617.104
+script = ExtResource("1_sy5k4")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 460.0
+offset_top = -789.0
+offset_right = 1377.0
+offset_bottom = -80.0
+grow_vertical = 2
+
+[node name="MainVBox" type="VBoxContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(1000, 1000)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="InfoLabel" type="Label" parent="HBoxContainer/MainVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Выберите квантовую неопределённость для X и O"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ControlPanel" type="HBoxContainer" parent="HBoxContainer/MainVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ButtonPanel" type="HBoxContainer" parent="HBoxContainer/MainVBox/ControlPanel"]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="HBoxContainer/MainVBox/ControlPanel/ButtonPanel"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Старт"
+
+[node name="ResetButton" type="Button" parent="HBoxContainer/MainVBox/ControlPanel/ButtonPanel"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Сброс"
+
+[node name="QuantumPanel" type="VBoxContainer" parent="HBoxContainer/MainVBox/ControlPanel"]
+layout_mode = 2
+
+[node name="XLabel" type="Label" parent="HBoxContainer/MainVBox/ControlPanel/QuantumPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Квантовая неопределённость ×"
+
+[node name="XSlider" type="HSlider" parent="HBoxContainer/MainVBox/ControlPanel/QuantumPanel"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+
+[node name="OLabel" type="Label" parent="HBoxContainer/MainVBox/ControlPanel/QuantumPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Квантовая неопределённость o"
+
+[node name="OSlider" type="HSlider" parent="HBoxContainer/MainVBox/ControlPanel/QuantumPanel"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+
+[node name="QuantumRequest" type="HTTPRequest" parent="HBoxContainer/MainVBox"]
+
+[node name="GameGrid" type="GridContainer" parent="HBoxContainer/MainVBox"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 3
+
+[node name="Cell_0" type="Button" parent="HBoxContainer/MainVBox/GameGrid"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+flat = true
+
+[node name="Cell_1" type="Button" parent="HBoxContainer/MainVBox/GameGrid"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+flat = true
+
+[node name="Cell_2" type="Button" parent="HBoxContainer/MainVBox/GameGrid"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+flat = true
+
+[node name="Cell_3" type="Button" parent="HBoxContainer/MainVBox/GameGrid"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+flat = true
+
+[node name="Cell_4" type="Button" parent="HBoxContainer/MainVBox/GameGrid"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+flat = true
+
+[node name="Cell_5" type="Button" parent="HBoxContainer/MainVBox/GameGrid"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+flat = true
+
+[node name="Cell_6" type="Button" parent="HBoxContainer/MainVBox/GameGrid"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+flat = true
+
+[node name="Cell_7" type="Button" parent="HBoxContainer/MainVBox/GameGrid"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+flat = true
+
+[node name="Cell_8" type="Button" parent="HBoxContainer/MainVBox/GameGrid"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+flat = true
+
+[node name="TutorialPanel" type="VBoxContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(600, 800)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TutorialText" type="RichTextLabel" parent="HBoxContainer/TutorialPanel"]
+custom_minimum_size = Vector2(600, 300)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+fit_content = true
+scroll_following = true
+
+[node name="NextStepButton" type="Button" parent="HBoxContainer/TutorialPanel"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "Далее →"
+vertical_icon_alignment = 0
+
+[node name="FormulaPlaceholder" type="TextureRect" parent="HBoxContainer/TutorialPanel"]
+layout_mode = 2
+stretch_mode = 5
+
+[node name="BlochPlaceholder" type="TextureRect" parent="HBoxContainer/TutorialPanel"]
+custom_minimum_size = Vector2(800, 800)
+layout_mode = 2
+stretch_mode = 5

@@ -15,11 +15,11 @@ const SERVER_URL := "http://127.0.0.1:8000/run-cirq"
 @onready var http_request: HTTPRequest = $HTTPRequest
 
 # Game state
-var cells: Array[Button] = []
-var moves: Array[String] = []
-var game_started: bool = false
-var current_player: String = "X"
-var quantum_params: Dictionary = {"qX": 0.0, "qO": 0.0}
+var cells: Array[Button] = global.cells
+var moves = global.moves
+var game_started = global.game_started
+var current_player = global.current_player
+var quantum_params = global.quantum_params
 
 func _ready() -> void:
 	# Initialize UI connections
@@ -93,7 +93,6 @@ func _on_cell_pressed(button: Button) -> void:
 	http_request.request(SERVER_URL, headers, HTTPClient.METHOD_POST, json_string)
 
 func _on_http_request_completed(result: int, response_code: int, headers: PackedStringArray, body: PackedByteArray) -> void:
-	# Re-enable all buttons
 	for cell in cells:
 		cell.disabled = false
 	
