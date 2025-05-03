@@ -1,0 +1,243 @@
+[gd_scene load_steps=14 format=3 uid="uid://dauvnhna4c3q8"]
+
+[ext_resource type="Script" uid="uid://eajprkg16yhu" path="res://Control.gd" id="1_sy5k4"]
+[ext_resource type="Script" uid="uid://dwf5dehit82ww" path="res://quantum_request.gd" id="2_e2u21"]
+[ext_resource type="Script" uid="uid://cv47rmaqn0mgm" path="res://right_formula_v_box.gd" id="2_j2q8x"]
+[ext_resource type="Script" uid="uid://bkfe5wk841amk" path="res://center_bloch_v_box.gd" id="3_bss38"]
+[ext_resource type="Script" uid="uid://cktkumlx3i20r" path="res://bloch_sphere.gd" id="3_tda05"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e2u21"]
+shading_mode = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bss38"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_tda05"]
+radius = 2.0
+height = 4.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qn3nj"]
+emission_enabled = true
+emission = Color(0.937255, 0.286275, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_l6pdb"]
+material = SubResource("StandardMaterial3D_qn3nj")
+top_radius = 0.05
+bottom_radius = 0.05
+height = 1.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_r657h"]
+top_radius = 0.01
+bottom_radius = 0.1
+height = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f0urt"]
+emission_enabled = true
+emission = Color(0, 0, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jfkdj"]
+material = SubResource("StandardMaterial3D_f0urt")
+top_radius = 0.03
+bottom_radius = 0.03
+height = 4.0
+
+[node name="QuantumTicTacToe" type="Control"]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 3
+anchor_left = 0.5
+anchor_top = 0.29
+anchor_right = 0.5
+anchor_bottom = 0.29
+offset_left = -589.0
+offset_top = -178.92
+offset_right = 2946.0
+offset_bottom = 1814.08
+script = ExtResource("1_sy5k4")
+
+[node name="QuantumRequest" type="HTTPRequest" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_e2u21")
+
+[node name="MainHBox" type="HBoxContainer" parent="."]
+layout_mode = 1
+offset_right = 2028.0
+offset_bottom = 1262.0
+scale = Vector2(0.94341, 0.907901)
+
+[node name="LeftGameVBox" type="VBoxContainer" parent="MainHBox"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="InfoLabel" type="Label" parent="MainHBox/LeftGameVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Выберите квантовую неопределённость для X и O"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ControlPanel" type="HBoxContainer" parent="MainHBox/LeftGameVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="ButtonPanel" type="HBoxContainer" parent="MainHBox/LeftGameVBox/ControlPanel"]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="MainHBox/LeftGameVBox/ControlPanel/ButtonPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Старт"
+
+[node name="ResetButton" type="Button" parent="MainHBox/LeftGameVBox/ControlPanel/ButtonPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Сброс"
+
+[node name="QuantumPanel" type="VBoxContainer" parent="MainHBox/LeftGameVBox/ControlPanel"]
+layout_mode = 2
+
+[node name="XLabel" type="Label" parent="MainHBox/LeftGameVBox/ControlPanel/QuantumPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Квантовая неопределённость ×"
+
+[node name="XSlider" type="HSlider" parent="MainHBox/LeftGameVBox/ControlPanel/QuantumPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+
+[node name="OLabel" type="Label" parent="MainHBox/LeftGameVBox/ControlPanel/QuantumPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Квантовая неопределённость o"
+
+[node name="OSlider" type="HSlider" parent="MainHBox/LeftGameVBox/ControlPanel/QuantumPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+
+[node name="GameGrid" type="GridContainer" parent="MainHBox/LeftGameVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 3
+
+[node name="Bloch3DContainer" type="SubViewportContainer" parent="MainHBox"]
+custom_minimum_size = Vector2(800, 400)
+layout_mode = 2
+focus_mode = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="MainHBox/Bloch3DContainer"]
+msaa_2d = 2
+msaa_3d = 2
+size = Vector2i(800, 1262)
+render_target_update_mode = 4
+
+[node name="Bloch3DScene" type="Node3D" parent="MainHBox/Bloch3DContainer/SubViewport"]
+
+[node name="Camera3D" type="Camera3D" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 2, 5)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene"]
+light_energy = 2.0
+
+[node name="BlochSphere" type="Node3D" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene"]
+unique_name_in_owner = true
+script = ExtResource("3_tda05")
+
+[node name="SphereMesh" type="MeshInstance3D" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene/BlochSphere"]
+unique_name_in_owner = true
+material_override = SubResource("StandardMaterial3D_e2u21")
+material_overlay = SubResource("StandardMaterial3D_bss38")
+transparency = 0.95
+mesh = SubResource("SphereMesh_tda05")
+
+[node name="StateVector" type="Node3D" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene/BlochSphere"]
+unique_name_in_owner = true
+
+[node name="ArrowCylinder" type="MeshInstance3D" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene/BlochSphere/StateVector"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+mesh = SubResource("CylinderMesh_l6pdb")
+
+[node name="ArrowCone" type="MeshInstance3D" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene/BlochSphere/StateVector"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("CylinderMesh_r657h")
+
+[node name="Axes" type="Node3D" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene/BlochSphere"]
+
+[node name="XAxis" type="MeshInstance3D" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene/BlochSphere/Axes"]
+unique_name_in_owner = true
+mesh = SubResource("CylinderMesh_jfkdj")
+
+[node name="YAxis" type="MeshInstance3D" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene/BlochSphere/Axes"]
+unique_name_in_owner = true
+mesh = SubResource("CylinderMesh_jfkdj")
+
+[node name="ZAxis" type="MeshInstance3D" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene/BlochSphere/Axes"]
+unique_name_in_owner = true
+mesh = SubResource("CylinderMesh_jfkdj")
+
+[node name="RotationController" type="Node" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene"]
+
+[node name="InputController" type="Node" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene/RotationController"]
+
+[node name="TweenManager" type="Node" parent="MainHBox/Bloch3DContainer/SubViewport/Bloch3DScene"]
+
+[node name="RightFormulaVBox" type="VBoxContainer" parent="MainHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 800)
+layout_mode = 2
+theme_override_constants/separation = 20
+script = ExtResource("2_j2q8x")
+
+[node name="TutorialText" type="RichTextLabel" parent="MainHBox/RightFormulaVBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 100)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/table_border = Color(0, 0, 0, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+fit_content = true
+scroll_following = true
+
+[node name="FormulaPlaceholder" type="TextureRect" parent="MainHBox/RightFormulaVBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 200)
+layout_mode = 2
+stretch_mode = 5
+
+[node name="NextStepButton" type="Button" parent="MainHBox/RightFormulaVBox"]
+unique_name_in_owner = true
+z_index = 100
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "Далее →"
+vertical_icon_alignment = 0
+
+[node name="BlochImageLoader" type="VBoxContainer" parent="MainHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("3_bss38")
+
+[node name="BlochDisplay" type="TextureRect" parent="MainHBox/BlochImageLoader"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(800, 800)
+layout_mode = 2
+stretch_mode = 5
