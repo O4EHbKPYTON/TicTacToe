@@ -108,9 +108,9 @@ func _on_http_request_completed(result: int, response_code: int, headers: Packed
 		return
 	
 	var response_data: Dictionary = json.get_data()
-	var symbol: String = response_data.get("result", "")
+	var player: String = response_data.get("result", "")
 	
-	if symbol.is_empty():
+	if player.is_empty():
 		update_info_label("Invalid quantum result")
 		return
 	
@@ -126,11 +126,11 @@ func _on_http_request_completed(result: int, response_code: int, headers: Packed
 		return
 	
 	# Update the game state
-	pressed_button.text = symbol
-	moves.append(symbol)
+	pressed_button.text = player
+	moves.append(player)
 	
 	if check_win():
-		update_info_label("%s won the game!" % symbol)
+		update_info_label("%s won the game!" % player)
 		game_started = false
 	elif moves.size() == BOARD_SIZE * BOARD_SIZE:
 		update_info_label("Draw!")

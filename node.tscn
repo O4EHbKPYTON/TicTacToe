@@ -1,7 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://dauvnhna4c3q8"]
+[gd_scene load_steps=13 format=3 uid="uid://dms825umkk5fg"]
 
 [ext_resource type="Script" uid="uid://eajprkg16yhu" path="res://Control.gd" id="1_sy5k4"]
-[ext_resource type="Script" uid="uid://dwf5dehit82ww" path="res://quantum_request.gd" id="2_e2u21"]
 [ext_resource type="Script" uid="uid://cv47rmaqn0mgm" path="res://right_formula_v_box.gd" id="2_j2q8x"]
 [ext_resource type="Script" uid="uid://bkfe5wk841amk" path="res://center_bloch_v_box.gd" id="3_bss38"]
 [ext_resource type="Script" uid="uid://cktkumlx3i20r" path="res://bloch_sphere.gd" id="3_tda05"]
@@ -253,7 +252,3 @@ mesh = SubResource("CylinderMesh_jfkdj")
 [node name="InputController" type="Node" parent="ColorRect/Bloch3DContainer/SubViewport/Bloch3DScene/RotationController"]
 
 [node name="TweenManager" type="Node" parent="ColorRect/Bloch3DContainer/SubViewport/Bloch3DScene"]
-
-[node name="QuantumRequest" type="HTTPRequest" parent="ColorRect"]
-unique_name_in_owner = true
-script = ExtResource("2_e2u21")
