@@ -130,14 +130,5 @@ size_flags_horizontal = 10
 unique_name_in_owner = true
 script = ExtResource("2_kp2bb")
 
-[node name="DEBUGLabel" type="Label" parent="QuantumNetwork"]
-unique_name_in_owner = true
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -23.0
-grow_horizontal = 2
-grow_vertical = 0
-
 [node name="HTTPRequest" type="HTTPRequest" parent="QuantumNetwork"]
+unique_name_in_owner = true

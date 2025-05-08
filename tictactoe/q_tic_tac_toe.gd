@@ -13,11 +13,19 @@ const BOARD_SIZE := 3
 var cells: Array[Button] = []
 var moves: Array[String] = []
 var game_started: bool = false
-var current_player: String = "×"
-var quantum_params: Dictionary = {"q×": 0.0, "qo": 0.0}
+var current_symbol: String = "x"
+var quantum_params: Dictionary = {"qx": 0.0, "qo": 0.0}
 
 func _ready() -> void:
 	start_ttt()
+	_connect_signals()
+
+func _connect_signals() -> void:
+	start_button.pressed.connect(_on_start_button_pressed)
+	reset_button.pressed.connect(_on_reset_button_pressed)
+	x_slider.value_changed.connect(_on_x_slider_changed)
+	o_slider.value_changed.connect(_on_o_slider_changed)
+	global.quantum_response.connect(_on_quantum_response)
 
 func start_ttt() -> void:
 	game_grid.columns = BOARD_SIZE
@@ -33,38 +41,26 @@ func start_ttt() -> void:
 		button.pressed.connect(_on_cell_pressed.bind(button))
 		game_grid.add_child(button)
 		cells.append(button)
-
-	start_button.pressed.connect(_on_start_button_pressed)
-	reset_button.pressed.connect(_on_reset_button_pressed)
-	x_slider.value_changed.connect(_on_x_slider_changed)
-	o_slider.value_changed.connect(_on_o_slider_changed)
-
-	# Подключение сигнала от quantum_network
-	if not quantum_network.is_connected("quantum_response", Callable(self, "_on_quantum_response")):
-		quantum_network.connect("quantum_response", Callable(self, "_on_quantum_response"))
-
-	update_info_label("Выберите квантовую неопределенность для × и o")
+	update_info_label("Выберите квантовую неопределенность для x и o")
 
 func update_info_label(text: String) -> void:
 	info_label.text = text
 
-func _on_quantum_response(player: String, cell_index: int) -> void:
+func _on_quantum_response(symbol: String, cell_index: int) -> void:
 	for cell in cells:
 		cell.disabled = false
-	
 	if cell_index >= 0 and cell_index < cells.size():
-		cells[cell_index].text = player
-		moves.append(player)
-
+		cells[cell_index].text = symbol
+		moves.append(symbol)
 		if check_win():
-			update_info_label("%s выиграл игру!" % player)
+			update_info_label("%s выиграл игру!" % symbol)
 			game_started = false
 		elif moves.size() == BOARD_SIZE * BOARD_SIZE:
 			update_info_label("Ничья!")
 			game_started = false
 		else:
-			current_player = "o" if current_player == "×" else "×"
-			update_info_label("Ход %s" % current_player)
+			current_symbol = "o" if current_symbol == "x" else "x"
+			update_info_label("Ход %s" % current_symbol)
 	else:
 		update_info_label("Неверный индекс ячейки")
 
@@ -76,41 +72,38 @@ func _on_quantum_error(message: String) -> void:
 func _on_start_button_pressed() -> void:
 	if not game_started:
 		game_started = true
-		current_player = "×"
-		update_info_label("Ход ×")
+		current_symbol = "x"
+		update_info_label("Ход x")
 
 func _on_reset_button_pressed() -> void:
 	game_started = false
 	moves.clear()
-	current_player = "×"
-	quantum_params["q×"] = 0.0
+	current_symbol = "x"
+	quantum_params["qx"] = 0.0
 	quantum_params["qo"] = 0.0
 	x_slider.value = 0.0
 	o_slider.value = 0.0
-
 	for button in cells:
 		button.text = ""
 		button.disabled = false
-
-	update_info_label("Выберите квантовую неопределенность для × и o")
+	update_info_label("Выберите квантовую неопределенность для x и o")
 
 func _on_x_slider_changed(value: float) -> void:
-	quantum_params["q×"] = value
-	update_info_label("Квантовая неопределенность в × = %.1f" % value)
+	quantum_params["qx"] = value
+	update_info_label("Квантовая неопределенность для x = %.1f" % value)
 
 func _on_o_slider_changed(value: float) -> void:
 	quantum_params["qo"] = value
-	update_info_label("Квантовая неопределенность в o = %.1f" % value)
+	update_info_label("Квантовая неопределенность для o = %.1f" % value)
 
 func _on_cell_pressed(button: Button) -> void:
 	if not game_started or button.text != "":
 		return
-	var power: float = 1.0 + quantum_params["q×"] if current_player == "×" else quantum_params["qo"]
+	var power: float = 1.0 + quantum_params["qx"] if current_symbol == "x" else quantum_params["qo"]
 	var cell_index := cells.find(button)
 	for cell in cells:
 		cell.disabled = true
-	print("Отправка запроса:", current_player, power, cell_index)
-	quantum_network.send_quantum_request(current_player, power, cell_index)
+	quantum_network.send_quantum_request(current_symbol, power, cell_index)
 
 func check_win() -> bool:
 	for i in range(BOARD_SIZE):
@@ -120,14 +113,12 @@ func check_win() -> bool:
 		if row.all(func(cell): return cell.text == row[0].text and cell.text != ""):
 			highlight_winning_cells(row)
 			return true
-
 		var col := []
 		for j in range(BOARD_SIZE):
 			col.append(cells[j * BOARD_SIZE + i])
 		if col.all(func(cell): return cell.text == col[0].text and cell.text != ""):
 			highlight_winning_cells(col)
 			return true
-
 	var diag1 := []
 	var diag2 := []
 	for i in range(BOARD_SIZE):
@@ -139,9 +130,7 @@ func check_win() -> bool:
 	if diag2.all(func(cell): return cell.text == diag2[0].text and cell.text != ""):
 		highlight_winning_cells(diag2)
 		return true
-
 	return false
-
 
 func highlight_winning_cells(winning_cells: Array) -> void:
 	for cell in winning_cells:

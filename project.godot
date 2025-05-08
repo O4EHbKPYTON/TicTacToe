@@ -11,8 +11,8 @@ config_version=5
 [application]
 
 config/name="Quantum"
+run/main_scene="uid://b6wcppecnenft"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
 
 [autoload]
 
