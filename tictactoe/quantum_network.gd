@@ -1,7 +1,5 @@
 extends Node
 
-const SERVER_URL := "http://127.0.0.1:8000/run-cirq"
-
 @onready var http_request: HTTPRequest = $HTTPRequest
 
 func _ready() -> void:
@@ -16,7 +14,7 @@ func send_quantum_request(symbol: String, power: float, cell_index: int) -> void
 	var json := JSON.new()
 	var json_string := json.stringify(request_data)
 	var headers := ["Content-Type: application/json"]
-	http_request.request(SERVER_URL, headers, HTTPClient.METHOD_POST, json_string)
+	http_request.request(global.SERVER_URL, headers, HTTPClient.METHOD_POST, json_string)
 
 func _on_request_completed(result, response_code, headers, body):
 	if response_code == 200:

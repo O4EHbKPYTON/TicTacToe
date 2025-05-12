@@ -9,6 +9,9 @@ extends Control
 @onready var o_slider: HSlider = %OSlider
 @onready var game_grid: GridContainer = %GameGrid
 
+@onready var bloch_sphere: BlochImageLoader = %BlochSphere
+@onready var bloch_display: TextureRect = %BlochDisplay
+
 const BOARD_SIZE := 3
 var cells: Array[Button] = []
 var moves: Array[String] = []
@@ -19,6 +22,7 @@ var quantum_params: Dictionary = {"qx": 0.0, "qo": 0.0}
 func _ready() -> void:
 	start_ttt()
 	_connect_signals()
+	bloch_sphere.load_bloch_image(global.BLOCH_SPHERE_URL)
 
 func _connect_signals() -> void:
 	start_button.pressed.connect(_on_start_button_pressed)
