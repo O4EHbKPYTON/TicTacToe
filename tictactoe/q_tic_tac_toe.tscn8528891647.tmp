@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b6wcppecnenft"]
+[gd_scene load_steps=5 format=3 uid="uid://b6wcppecnenft"]
 
 [ext_resource type="Script" uid="uid://betx75a3ncicl" path="res://tictactoe/q_tic_tac_toe.gd" id="1_alybm"]
 [ext_resource type="Script" uid="uid://cktkumlx3i20r" path="res://tictactoe/bloch_sphere.gd" id="2_be033"]
 [ext_resource type="Script" uid="uid://2f2e1b0wvbvu" path="res://tictactoe/quantum_network.gd" id="2_kp2bb"]
+[ext_resource type="Script" uid="uid://denr5umgkg3lm" path="res://tictactoe/tutorial_manager.gd" id="3_be033"]
 
 [node name="QTicTacToe" type="Control"]
 layout_mode = 3
@@ -14,9 +15,12 @@ size_flags_vertical = 3
 script = ExtResource("1_alybm")
 
 [node name="UI" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="ColorRect" type="ColorRect" parent="UI"]
 custom_minimum_size = Vector2(1920, 1080)
@@ -26,9 +30,9 @@ offset_bottom = 1080.0
 color = Color(0.497474, 0.497474, 0.497474, 1)
 
 [node name="Screen" type="VBoxContainer" parent="UI"]
-layout_mode = 1
-offset_right = 1920.0
-offset_bottom = 1080.0
+layout_mode = 0
+offset_right = 1928.0
+offset_bottom = 1084.0
 
 [node name="InfoLabel" type="Label" parent="UI/Screen"]
 unique_name_in_owner = true
@@ -42,6 +46,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MainHBox" type="HBoxContainer" parent="UI/Screen"]
+custom_minimum_size = Vector2(1920, 1040)
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -150,6 +155,57 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="TutorialManager" type="Node" parent="UI/Screen/MainHBox/RightPart"]
+unique_name_in_owner = true
+script = ExtResource("3_be033")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Screen/MainHBox/RightPart"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 968.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextBox" type="VBoxContainer" parent="UI/Screen/MainHBox/RightPart/VBoxContainer"]
+custom_minimum_size = Vector2(0, 960)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Text" type="RichTextLabel" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/TextBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(640, 480)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Formula" type="RichTextLabel" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/TextBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(640, 480)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ButtonsBox" type="HBoxContainer" parent="UI/Screen/MainHBox/RightPart/VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 40
+
+[node name="ButtonLeft" type="Button" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/ButtonsBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+text = "<"
+
+[node name="ButtonRight" type="Button" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/ButtonsBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+text = ">"
 
 [node name="QuantumNetwork" type="Node" parent="."]
 unique_name_in_owner = true

@@ -10,9 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Quantum"
+config/name="QuantumG"
 run/main_scene="uid://b6wcppecnenft"
 config/features=PackedStringArray("4.4", "Forward Plus")
+config/icon="uid://ci2smduran6qt"
 
 [autoload]
 
