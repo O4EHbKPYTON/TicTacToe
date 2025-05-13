@@ -1,10 +1,9 @@
 extends Node
 
-var tutorial_steps = []
-var current_step := 0
+
 
 @onready var text: RichTextLabel = %Text
-@onready var formula: RichTextLabel = %Formula
+@onready var formula_image: TextureRect = %FormulaImage
 @onready var button_left: Button = %ButtonLeft
 @onready var button_right: Button = %ButtonRight
 @onready var http_request: HTTPRequest = $HTTPRequest
@@ -12,10 +11,27 @@ var current_step := 0
 var file = FileAccess.open("res://data/text/ttt.json", FileAccess.READ)
 
 func _ready() -> void:
+	load_font() 
 	load_tutorial_data()
 	update_tutorial()
 	_connect_signals()
 
+func load_font() -> void:
+	var dynamic_font = FontFile.new()
+	
+	var font_path = "res://fonts/Commissioner.ttf"
+	if FileAccess.file_exists(font_path):
+		dynamic_font.load_dynamic_font(font_path)
+		dynamic_font.size = 100  
+		text.add_theme_color_override("font_selected_color", Color.BLACK)
+		text.add_theme_color_override("default_color", Color.BLACK)
+		text.add_theme_color_override("font_color", Color.BLACK)
+		text.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
+		text.add_theme_font_override("normal_font", dynamic_font)
+		text.add_theme_font_size_override("normal_font_size", 100)
+	else:
+		printerr("Файл шрифта не найден:", font_path)
+	
 func _connect_signals() -> void:
 	button_left.pressed.connect(_on_left_pressed)
 	button_right.pressed.connect(_on_right_pressed)
@@ -24,34 +40,40 @@ func _connect_signals() -> void:
 func load_tutorial_data():
 	if file:
 		var content = file.get_as_text()
-		tutorial_steps = JSON.parse_string(content)
+		global.tutorial_steps = JSON.parse_string(content)
 	else:
 		print("ошибка текста!!!")
 
 func _on_left_pressed():
-	if current_step > 0:
-		current_step -= 1
+	if global.current_step > 0:
+		global.current_step -= 1
 		update_tutorial()
 
 func _on_right_pressed():
-	if current_step < tutorial_steps.size() - 1:
-		current_step += 1
+	if global.current_step < global.tutorial_steps.size() - 1:
+		global.current_step += 1
 		update_tutorial()
 
 func update_tutorial():
-	if tutorial_steps.is_empty():
+	if global.tutorial_steps.is_empty():
 		return
-	var step = tutorial_steps[current_step]
-	text.text = step["text"]
-	formula.text = "Загрузка формулы..."
-	var url = global.FORMULA_URL + str(step["slide"])
+	var step = global.tutorial_steps[global.current_step]
+	text.text = "[color=black]" + step["text"] + "[/color]"
+	formula_image.texture = null
+	var url = global.FORMULA_URL + "/" + step["formula"]
 	http_request.request(url)
-	button_left.disabled = current_step == 0
-	button_right.disabled = current_step >= tutorial_steps.size() - 1
+	button_left.disabled = global.current_step == 0
+	button_right.disabled = global.current_step >= global.tutorial_steps.size() - 1
+
 
 func _on_request_completed(result, response_code, headers, body):
 	if response_code == 200:
-		var json = JSON.parse_string(body.get_string_from_utf8())
-		formula.text = json.get("formula", "Формула не найдена")
+		var image = Image.new()
+		var err = image.load_png_from_buffer(body)
+		if err == OK:
+			var tex = ImageTexture.create_from_image(image)
+			formula_image.texture = tex
+		else:
+			formula_image.texture = null
 	else:
-		formula.text = "Ошибка при загрузке формулы"
+		text.text += "\n[Ошибка при загрузке формулы]"

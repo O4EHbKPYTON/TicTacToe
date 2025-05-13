@@ -107,7 +107,8 @@ func _on_cell_pressed(button: Button) -> void:
 	var cell_index := cells.find(button)
 	for cell in cells:
 		cell.disabled = true
-	quantum_network.send_quantum_request(current_symbol, power, cell_index)
+	var theta : float = PI * (quantum_params["qx"] if current_symbol == "x" else quantum_params["qo"])
+	quantum_network.send_quantum_request(current_symbol, theta, cell_index)
 
 func check_win() -> bool:
 	for i in range(BOARD_SIZE):
