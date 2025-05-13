@@ -3,6 +3,16 @@ class_name BlochImageLoader
 
 @onready var bloch_display: TextureRect = %BlochDisplay
 
+func get_bloch_sphere_url(state: String) -> String:
+	return global.BLOCH_SPHERE_URL + state
+
+func set_state(state: String) -> void:
+	if state in ["superposition", "x", "o", "measurement"]:
+		global.current_state = state
+		load_bloch_image(get_bloch_sphere_url(global.current_state))
+	else:
+		print("Invalid state: ", state)
+
 func load_bloch_image(BLOCH_SPHERE_URL: String) -> void:
 	var request = HTTPRequest.new()
 	add_child(request)

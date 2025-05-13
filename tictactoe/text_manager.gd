@@ -7,6 +7,7 @@ extends Node
 @onready var button_left: Button = %ButtonLeft
 @onready var button_right: Button = %ButtonRight
 @onready var http_request: HTTPRequest = $HTTPRequest
+@onready var bloch_sphere: BlochImageLoader = %BlochSphere
 
 var file = FileAccess.open("res://data/text/ttt.json", FileAccess.READ)
 
@@ -59,6 +60,16 @@ func update_tutorial():
 		return
 	var step = global.tutorial_steps[global.current_step]
 	text.text = "[color=black]" + step["text"] + "[/color]"
+	
+	match step["formula"]:
+		"intro", "superposition":
+			bloch_sphere.set_state("superposition")
+		"basis_states", "x_gate":
+			bloch_sphere.set_state("x")  
+		"measurement":
+			bloch_sphere.set_state("measurement")
+	
+	
 	formula_image.texture = null
 	var url = global.FORMULA_URL + "/" + step["formula"]
 	http_request.request(url)

@@ -22,7 +22,7 @@ var quantum_params: Dictionary = {"qx": 0.0, "qo": 0.0}
 func _ready() -> void:
 	start_ttt()
 	_connect_signals()
-	bloch_sphere.load_bloch_image(global.BLOCH_SPHERE_URL)
+	bloch_sphere.load_bloch_image(bloch_sphere.get_bloch_sphere_url(global.current_state))
 
 func _connect_signals() -> void:
 	start_button.pressed.connect(_on_start_button_pressed)
