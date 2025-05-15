@@ -1,10 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://b6wcppecnenft"]
+[gd_scene load_steps=11 format=3 uid="uid://b6wcppecnenft"]
 
 [ext_resource type="Script" uid="uid://betx75a3ncicl" path="res://tictactoe/q_tic_tac_toe.gd" id="1_alybm"]
 [ext_resource type="Script" uid="uid://cktkumlx3i20r" path="res://tictactoe/bloch_sphere.gd" id="2_be033"]
 [ext_resource type="Script" uid="uid://2f2e1b0wvbvu" path="res://tictactoe/quantum_network.gd" id="2_kp2bb"]
 [ext_resource type="Script" uid="uid://denr5umgkg3lm" path="res://tictactoe/text_manager.gd" id="3_be033"]
+[ext_resource type="StyleBox" uid="uid://dpiivk2cg3a2" path="res://data/new_style_box_line.tres" id="3_crk38"]
+[ext_resource type="StyleBox" uid="uid://doctmewjag3k4" path="res://data/q_tic_tac_toe.tres" id="3_i5uvk"]
 [ext_resource type="FontFile" uid="uid://cv43kwmgdhm6j" path="res://data/fonts/DroidSans-Bold.ttf" id="4_i5uvk"]
+
+[sub_resource type="Theme" id="Theme_crk38"]
+
+[sub_resource type="Theme" id="Theme_i5uvk"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_i5uvk"]
+color = Color(0.716296, 0.716296, 0.716296, 1)
+thickness = 10
 
 [node name="QTicTacToe" type="Control"]
 layout_mode = 3
@@ -23,7 +33,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.497474, 0.497474, 0.497474, 1)
+color = Color(0.2, 0.188235, 0.372549, 1)
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 1
@@ -42,11 +52,34 @@ offset_bottom = 1084.0
 unique_name_in_owner = true
 custom_minimum_size = Vector2(1920, 40)
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 24
 text = "Квантовые крестики-нолики"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TopPart" type="HBoxContainer" parent="UI/Screen"]
+custom_minimum_size = Vector2(1920, 100)
+layout_mode = 2
+
+[node name="Left" type="Control" parent="UI/Screen/TopPart"]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Screen/TopPart"]
+layout_mode = 2
+
+[node name="TopMargin" type="Control" parent="UI/Screen/TopPart/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="BotMargin" type="Control" parent="UI/Screen/TopPart/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Right" type="Control" parent="UI/Screen/TopPart"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
 
 [node name="MainHBox" type="HBoxContainer" parent="UI/Screen"]
 custom_minimum_size = Vector2(1920, 1040)
@@ -54,175 +87,250 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="LeftPart" type="Control" parent="UI/Screen/MainHBox"]
-custom_minimum_size = Vector2(640, 0)
+custom_minimum_size = Vector2(500, 400)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="BlochSphere" type="VBoxContainer" parent="UI/Screen/MainHBox/LeftPart"]
-unique_name_in_owner = true
+[node name="TicTacToe" type="VBoxContainer" parent="UI/Screen/MainHBox/LeftPart"]
+custom_minimum_size = Vector2(500, 400)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("2_be033")
-
-[node name="BlochDisplay" type="TextureRect" parent="UI/Screen/MainHBox/LeftPart/BlochSphere"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-expand_mode = 2
-
-[node name="MiddlePart" type="Control" parent="UI/Screen/MainHBox"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TicTacToe" type="VBoxContainer" parent="UI/Screen/MainHBox/MiddlePart"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+offset_left = 37.0
+offset_top = -30.0
+offset_right = -39.0
+offset_bottom = -199.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TTTInterface" type="VBoxContainer" parent="UI/Screen/MainHBox/MiddlePart/TicTacToe"]
+[node name="TopMargin" type="Control" parent="UI/Screen/MainHBox/LeftPart/TicTacToe"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="TTTInterface" type="VBoxContainer" parent="UI/Screen/MainHBox/LeftPart/TicTacToe"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 0
+theme = SubResource("Theme_crk38")
 
-[node name="ControlPanel" type="HBoxContainer" parent="UI/Screen/MainHBox/MiddlePart/TicTacToe/TTTInterface"]
+[node name="ControlPanel" type="HBoxContainer" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface"]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="ButtonPanel" type="HBoxContainer" parent="UI/Screen/MainHBox/MiddlePart/TicTacToe/TTTInterface/ControlPanel"]
-custom_minimum_size = Vector2(150, 100)
+[node name="ButtonPanel" type="HBoxContainer" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface/ControlPanel"]
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 
-[node name="StartButton" type="Button" parent="UI/Screen/MainHBox/MiddlePart/TicTacToe/TTTInterface/ControlPanel/ButtonPanel"]
+[node name="StartButton" type="Button" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface/ControlPanel/ButtonPanel"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
+theme = SubResource("Theme_i5uvk")
+theme_override_colors/font_disabled_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_hover_pressed_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_hover_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_pressed_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_focus_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_normal_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.2, 0.188235, 0.372549, 1)
 theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = ExtResource("3_i5uvk")
 text = "Старт"
 
-[node name="ResetButton" type="Button" parent="UI/Screen/MainHBox/MiddlePart/TicTacToe/TTTInterface/ControlPanel/ButtonPanel"]
+[node name="Control" type="Control" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface/ControlPanel/ButtonPanel"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="ResetButton" type="Button" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface/ControlPanel/ButtonPanel"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.188235, 0.372549, 1)
 theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = ExtResource("3_i5uvk")
 text = "Сброс"
 
-[node name="QuantumPanel" type="VBoxContainer" parent="UI/Screen/MainHBox/MiddlePart/TicTacToe/TTTInterface/ControlPanel"]
+[node name="Control" type="Control" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface/ControlPanel"]
+custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 
-[node name="XLabel" type="Label" parent="UI/Screen/MainHBox/MiddlePart/TicTacToe/TTTInterface/ControlPanel/QuantumPanel"]
+[node name="QuantumPanel" type="VBoxContainer" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface/ControlPanel"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+
+[node name="XLabel" type="Label" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface/ControlPanel/QuantumPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 24
 text = "Квантовая неопределённость ×"
 
-[node name="XSlider" type="HSlider" parent="UI/Screen/MainHBox/MiddlePart/TicTacToe/TTTInterface/ControlPanel/QuantumPanel"]
+[node name="XSlider" type="HSlider" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface/ControlPanel/QuantumPanel"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
+theme_override_styles/slider = SubResource("StyleBoxLine_i5uvk")
 max_value = 1.0
 step = 0.1
 
-[node name="OLabel" type="Label" parent="UI/Screen/MainHBox/MiddlePart/TicTacToe/TTTInterface/ControlPanel/QuantumPanel"]
+[node name="OLabel" type="Label" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface/ControlPanel/QuantumPanel"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 24
 text = "Квантовая неопределённость o"
 
-[node name="OSlider" type="HSlider" parent="UI/Screen/MainHBox/MiddlePart/TicTacToe/TTTInterface/ControlPanel/QuantumPanel"]
+[node name="OSlider" type="HSlider" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface/ControlPanel/QuantumPanel"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
+theme_override_styles/slider = ExtResource("3_crk38")
 max_value = 1.0
 step = 0.1
 
-[node name="GameGrid" type="GridContainer" parent="UI/Screen/MainHBox/MiddlePart/TicTacToe/TTTInterface"]
+[node name="Control" type="Control" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="GameGrid" type="GridContainer" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/TTTInterface"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 3
 
-[node name="DownPart" type="Control" parent="UI/Screen/MainHBox/MiddlePart/TicTacToe"]
-custom_minimum_size = Vector2(500, 150)
+[node name="BottomMargin" type="Control" parent="UI/Screen/MainHBox/LeftPart/TicTacToe"]
+custom_minimum_size = Vector2(500, 30)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RightPart" type="Control" parent="UI/Screen/MainHBox"]
-custom_minimum_size = Vector2(640, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Screen/MainHBox/RightPart"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TextBox" type="VBoxContainer" parent="UI/Screen/MainHBox/RightPart/VBoxContainer"]
-custom_minimum_size = Vector2(640, 980)
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="Text" type="RichTextLabel" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/TextBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(640, 588)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_colors/font_selected_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_fonts/normal_font = ExtResource("4_i5uvk")
-theme_override_fonts/bold_font = ExtResource("4_i5uvk")
-theme_override_font_sizes/normal_font_size = 30
-theme_override_font_sizes/bold_font_size = 30
-bbcode_enabled = true
-
-[node name="Formula" type="RichTextLabel" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/TextBox"]
-unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(640, 317)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="FormulaImage" type="TextureRect" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/TextBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(640, 317)
-layout_mode = 2
-
-[node name="ButtonsBox" type="HBoxContainer" parent="UI/Screen/MainHBox/RightPart/VBoxContainer"]
-custom_minimum_size = Vector2(640, 125)
+[node name="ButtonsBox" type="HBoxContainer" parent="UI/Screen/MainHBox/LeftPart/TicTacToe"]
+custom_minimum_size = Vector2(640, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 40
 alignment = 1
 
-[node name="ButtonLeft" type="Button" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/ButtonsBox"]
+[node name="ButtonLeft" type="Button" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/ButtonsBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
-text = "<"
+theme_override_colors/font_disabled_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_hover_pressed_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_hover_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_pressed_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_focus_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_normal_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_styles/normal = ExtResource("3_i5uvk")
+text = "Назад"
 
-[node name="ButtonRight" type="Button" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/ButtonsBox"]
+[node name="ButtonRight" type="Button" parent="UI/Screen/MainHBox/LeftPart/TicTacToe/ButtonsBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
-text = ">"
+theme_override_colors/font_disabled_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_hover_pressed_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_hover_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_pressed_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_focus_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/icon_normal_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.2, 0.188235, 0.372549, 1)
+theme_override_styles/normal = ExtResource("3_i5uvk")
+text = "Далее
+"
+
+[node name="RightPart" type="Control" parent="UI/Screen/MainHBox"]
+custom_minimum_size = Vector2(1200, 1080)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Screen/MainHBox/RightPart"]
+custom_minimum_size = Vector2(0, 1100)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -38.0
+offset_bottom = 91.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextBox" type="VBoxContainer" parent="UI/Screen/MainHBox/RightPart/VBoxContainer"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="FormulaImage" type="TextureRect" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/TextBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 2
+
+[node name="BlochSphere" type="HBoxContainer" parent="UI/Screen/MainHBox/RightPart/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 750)
+layout_mode = 2
+script = ExtResource("2_be033")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/BlochSphere"]
+custom_minimum_size = Vector2(500, 750)
+layout_mode = 2
+
+[node name="TextPart1" type="RichTextLabel" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/BlochSphere/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 750)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("4_i5uvk")
+theme_override_fonts/bold_font = ExtResource("4_i5uvk")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 30
+bbcode_enabled = true
+
+[node name="TextPart2" type="RichTextLabel" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/BlochSphere/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("4_i5uvk")
+theme_override_fonts/bold_font = ExtResource("4_i5uvk")
+theme_override_font_sizes/normal_font_size = 30
+theme_override_font_sizes/bold_font_size = 30
+bbcode_enabled = true
+
+[node name="BlochDisplay" type="TextureRect" parent="UI/Screen/MainHBox/RightPart/VBoxContainer/BlochSphere"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 300)
+layout_mode = 2
+size_flags_vertical = 3
+expand_mode = 2
 
 [node name="TextManager" type="Node" parent="UI/Screen/MainHBox/RightPart"]
 unique_name_in_owner = true

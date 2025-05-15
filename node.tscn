@@ -349,7 +349,7 @@ vertical_icon_alignment = 0
 
 [node name="Bloch3DContainer" type="SubViewportContainer" parent="ColorRect"]
 visible = false
-custom_minimum_size = Vector2(800, 400)
+custom_minimum_size = Vector2(500, 400)
 layout_mode = 2
 offset_left = 582.084
 offset_right = 1382.08

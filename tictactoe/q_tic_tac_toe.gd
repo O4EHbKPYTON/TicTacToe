@@ -20,9 +20,20 @@ var current_symbol: String = "x"
 var quantum_params: Dictionary = {"qx": 0.0, "qo": 0.0}
 
 func _ready() -> void:
+	start_button.add_theme_color_override("icon_disabled_color", Color.WHITE)
+	start_button.add_theme_color_override("icon_focus_color", Color.WHITE)
+	start_button.add_theme_color_override("icon_hover_color", Color.WHITE)
+	start_button.add_theme_color_override("icon_hover_pressed_color", Color.WHITE)
+	start_button.add_theme_color_override("icon_normal_color", Color.WHITE)
+	start_button.add_theme_color_override("icon_pressed_color", Color.WHITE)
+	
+	start_button.add_theme_color_override("bg_color", Color.WHITE)
+	start_button.add_theme_color_override("disabled", Color.WHITE)
+	start_button.add_theme_color_override("hover", Color.WHITE)
+	start_button.add_theme_color_override("pressed", Color.WHITE)
 	start_ttt()
 	_connect_signals()
-	bloch_sphere.load_bloch_image(bloch_sphere.get_bloch_sphere_url(global.current_state))
+	bloch_sphere.set_state(global.current_state)
 
 func _connect_signals() -> void:
 	start_button.pressed.connect(_on_start_button_pressed)
@@ -34,18 +45,25 @@ func _connect_signals() -> void:
 func start_ttt() -> void:
 	game_grid.columns = BOARD_SIZE
 	cells.clear()
+
+	var stylebox_normal := preload("res://data/q_tic_tac_toe.tres") as StyleBox
+
 	for child in game_grid.get_children():
 		child.queue_free()
+
 	for i in range(BOARD_SIZE * BOARD_SIZE):
 		var button := Button.new()
 		button.name = "Cell_%d" % i
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		button.custom_minimum_size = Vector2(200, 200)
+		button.custom_minimum_size = Vector2(150, 180)
+		button.add_theme_stylebox_override("normal", stylebox_normal)
 		button.pressed.connect(_on_cell_pressed.bind(button))
 		game_grid.add_child(button)
 		cells.append(button)
+
 	update_info_label("Выберите квантовую неопределенность для x и o")
+
 
 func update_info_label(text: String) -> void:
 	info_label.text = text

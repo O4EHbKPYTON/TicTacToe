@@ -1,12 +1,9 @@
 extends Node
 
-
-
-@onready var text: RichTextLabel = %Text
+@onready var text: RichTextLabel = %TextPart1
 @onready var formula_image: TextureRect = %FormulaImage
 @onready var button_left: Button = %ButtonLeft
 @onready var button_right: Button = %ButtonRight
-@onready var http_request: HTTPRequest = $HTTPRequest
 @onready var bloch_sphere: BlochImageLoader = %BlochSphere
 
 var file = FileAccess.open("res://data/text/ttt.json", FileAccess.READ)
@@ -19,24 +16,22 @@ func _ready() -> void:
 
 func load_font() -> void:
 	var dynamic_font = FontFile.new()
-	
 	var font_path = "res://fonts/Commissioner.ttf"
 	if FileAccess.file_exists(font_path):
 		dynamic_font.load_dynamic_font(font_path)
 		dynamic_font.size = 100  
-		text.add_theme_color_override("font_selected_color", Color.BLACK)
-		text.add_theme_color_override("default_color", Color.BLACK)
-		text.add_theme_color_override("font_color", Color.BLACK)
+		text.add_theme_color_override("font_selected_color", Color.WHITE)
+		text.add_theme_color_override("default_color", Color.WHITE)
+		text.add_theme_color_override("font_color", Color.WHITE)
 		text.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
 		text.add_theme_font_override("normal_font", dynamic_font)
 		text.add_theme_font_size_override("normal_font_size", 100)
 	else:
 		printerr("Файл шрифта не найден:", font_path)
-	
+
 func _connect_signals() -> void:
 	button_left.pressed.connect(_on_left_pressed)
 	button_right.pressed.connect(_on_right_pressed)
-	http_request.request_completed.connect(_on_request_completed)
 
 func load_tutorial_data():
 	if file:
@@ -59,8 +54,8 @@ func update_tutorial():
 	if global.tutorial_steps.is_empty():
 		return
 	var step = global.tutorial_steps[global.current_step]
-	text.text = "[color=black]" + step["text"] + "[/color]"
-	
+	text.text = "[color=white]" + step["text"] + "[/color]"
+
 	match step["formula"]:
 		"intro", "superposition":
 			bloch_sphere.set_state("superposition")
@@ -68,23 +63,15 @@ func update_tutorial():
 			bloch_sphere.set_state("x")  
 		"measurement":
 			bloch_sphere.set_state("measurement")
-	
-	
-	formula_image.texture = null
-	var url = global.FORMULA_URL + "/" + step["formula"]
-	http_request.request(url)
+
+	# Загрузка локального изображения
+	var image_path = "res://data/formulas/" + step["formula"] + ".png"
+	if ResourceLoader.exists(image_path):
+		var tex = load(image_path)
+		formula_image.texture = tex
+	else:
+		formula_image.texture = null
+		text.text += "\n[Формула не найдена локально]"
+
 	button_left.disabled = global.current_step == 0
 	button_right.disabled = global.current_step >= global.tutorial_steps.size() - 1
-
-
-func _on_request_completed(result, response_code, headers, body):
-	if response_code == 200:
-		var image = Image.new()
-		var err = image.load_png_from_buffer(body)
-		if err == OK:
-			var tex = ImageTexture.create_from_image(image)
-			formula_image.texture = tex
-		else:
-			formula_image.texture = null
-	else:
-		text.text += "\n[Ошибка при загрузке формулы]"
