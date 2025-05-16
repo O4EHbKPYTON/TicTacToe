@@ -48,6 +48,8 @@ func start_ttt() -> void:
 
 	var stylebox_normal := preload("res://data/q_tic_tac_toe.tres") as StyleBox
 
+	var custom_font := preload("res://data/fonts/DroidSans-Bold.ttf") as FontFile
+	
 	for child in game_grid.get_children():
 		child.queue_free()
 
@@ -58,6 +60,17 @@ func start_ttt() -> void:
 		button.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		button.custom_minimum_size = Vector2(150, 180)
 		button.add_theme_stylebox_override("normal", stylebox_normal)
+
+		# Цвет текста
+		button.add_theme_color_override("font_color", Color("#33305f"))
+		button.add_theme_color_override("font_pressed_color", Color("#33305f"))
+		button.add_theme_color_override("font_hover_pressed_color", Color("#33305f"))
+		button.add_theme_color_override("font_focus_color", Color("#33305f"))
+		
+		# Устанавливаем шрифт и размер
+		button.add_theme_font_override("font", custom_font)
+		button.add_theme_font_size_override("font_size", 100)
+
 		button.pressed.connect(_on_cell_pressed.bind(button))
 		game_grid.add_child(button)
 		cells.append(button)
