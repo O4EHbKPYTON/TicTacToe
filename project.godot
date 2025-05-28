@@ -10,7 +10,16 @@ config_version=5
 
 [application]
 
-config/name="Quantum"
-run/main_scene="res://node.tscn"
+config/name="QuantumG"
+run/main_scene="uid://b6wcppecnenft"
 config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://ci2smduran6qt"
+
+[autoload]
+
+global="*res://autoload/globals.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080

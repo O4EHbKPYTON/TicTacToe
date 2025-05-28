@@ -1,0 +1,37 @@
+[
+	{
+		"slide": 1,
+		"text": "тут текст 1",
+		"formula": "basis_states"
+	},
+	{
+		"slide": 2,
+		"text": "тут текст 2",
+		"formula": "x_gate"
+	},
+	{
+		"slide": 3,
+		"text": "тут текст 3",
+		"formula": "strategy"
+	},
+	{
+		"slide": 4,
+		"text": "тут текст 3",
+		"formula": "superposition"
+	},
+	{
+		"slide": 5,
+		"text": "тут текст 3",
+		"formula": "probability"
+	},
+	{
+		"slide": 6,
+		"text": "тут текст 3",
+		"formula": "measurement"
+	},
+	{
+		"slide": 7,
+		"text": "тут текст 3",
+		"formula": "intro"
+	}
+]
