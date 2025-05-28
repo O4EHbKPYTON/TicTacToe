@@ -20,17 +20,6 @@ var current_symbol: String = "x"
 var quantum_params: Dictionary = {"qx": 0.0, "qo": 0.0}
 
 func _ready() -> void:
-	start_button.add_theme_color_override("icon_disabled_color", Color.WHITE)
-	start_button.add_theme_color_override("icon_focus_color", Color.WHITE)
-	start_button.add_theme_color_override("icon_hover_color", Color.WHITE)
-	start_button.add_theme_color_override("icon_hover_pressed_color", Color.WHITE)
-	start_button.add_theme_color_override("icon_normal_color", Color.WHITE)
-	start_button.add_theme_color_override("icon_pressed_color", Color.WHITE)
-	
-	start_button.add_theme_color_override("bg_color", Color.WHITE)
-	start_button.add_theme_color_override("disabled", Color.WHITE)
-	start_button.add_theme_color_override("hover", Color.WHITE)
-	start_button.add_theme_color_override("pressed", Color.WHITE)
 	start_ttt()
 	_connect_signals()
 	bloch_sphere.set_state(global.current_state)
@@ -85,7 +74,7 @@ func _on_quantum_response(symbol: String, cell_index: int) -> void:
 	for cell in cells:
 		cell.disabled = false
 	if cell_index >= 0 and cell_index < cells.size():
-		cells[cell_index].text = symbol
+		cells[cell_index].text = current_symbol
 		moves.append(symbol)
 		if check_win():
 			update_info_label("%s выиграл игру!" % symbol)
