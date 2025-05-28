@@ -1,9 +1,9 @@
 [gd_scene load_steps=11 format=3 uid="uid://b6wcppecnenft"]
 
 [ext_resource type="Script" uid="uid://betx75a3ncicl" path="res://tictactoe/q_tic_tac_toe.gd" id="1_alybm"]
-[ext_resource type="Script" uid="uid://cktkumlx3i20r" path="res://tictactoe/bloch_sphere.gd" id="2_be033"]
+[ext_resource type="Script" path="res://tictactoe/bloch_sphere.gd" id="2_be033"]
 [ext_resource type="Script" uid="uid://2f2e1b0wvbvu" path="res://tictactoe/quantum_network.gd" id="2_kp2bb"]
-[ext_resource type="Script" uid="uid://denr5umgkg3lm" path="res://tictactoe/text_manager.gd" id="3_be033"]
+[ext_resource type="Script" path="res://tictactoe/text_manager.gd" id="3_be033"]
 [ext_resource type="StyleBox" uid="uid://dpiivk2cg3a2" path="res://data/new_style_box_line.tres" id="3_crk38"]
 [ext_resource type="StyleBox" uid="uid://doctmewjag3k4" path="res://data/q_tic_tac_toe.tres" id="3_i5uvk"]
 [ext_resource type="FontFile" uid="uid://cv43kwmgdhm6j" path="res://data/fonts/DroidSans-Bold.ttf" id="4_i5uvk"]

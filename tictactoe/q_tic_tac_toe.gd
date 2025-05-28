@@ -74,7 +74,7 @@ func _on_quantum_response(symbol: String, cell_index: int) -> void:
 	for cell in cells:
 		cell.disabled = false
 	if cell_index >= 0 and cell_index < cells.size():
-		cells[cell_index].text = current_symbol
+		cells[cell_index].text = symbol
 		moves.append(symbol)
 		if check_win():
 			update_info_label("%s выиграл игру!" % symbol)
@@ -127,8 +127,7 @@ func _on_cell_pressed(button: Button) -> void:
 	var cell_index := cells.find(button)
 	for cell in cells:
 		cell.disabled = true
-	var theta : float = PI * (quantum_params["qx"] if current_symbol == "x" else quantum_params["qo"])
-	quantum_network.send_quantum_request(current_symbol, theta, cell_index)
+	quantum_network.send_quantum_request(current_symbol, power, cell_index)
 
 func check_win() -> bool:
 	for i in range(BOARD_SIZE):
